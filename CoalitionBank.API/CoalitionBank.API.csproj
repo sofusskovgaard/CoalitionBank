@@ -2,6 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="GraphQL" Version="4.6.0" />
+      <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="5.0.2" />
+      <PackageReference Include="GraphQL.Server.Transports.AspNetCore.SystemTextJson" Version="5.0.2" />
+      <PackageReference Include="GraphQL.Server.Ui.Playground" Version="5.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CoalitionBank.Common\CoalitionBank.Common.csproj" />
+    </ItemGroup>
 
 </Project>
