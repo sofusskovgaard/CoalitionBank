@@ -1,5 +1,8 @@
+using CoalitionBank.Common.Attributes;
+
 namespace CoalitionBank.Common.Entities.Users
 {
+    [CosmosContainer("Users")]
     public class UserEntity : BaseEntity, IUserEntity
     {
         public string Firstname { get; set; }

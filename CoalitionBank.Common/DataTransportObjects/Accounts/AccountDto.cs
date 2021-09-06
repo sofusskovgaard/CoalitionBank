@@ -1,9 +1,6 @@
-using CoalitionBank.Common.Attributes;
-
-namespace CoalitionBank.Common.Entities.Accounts
+﻿namespace CoalitionBank.Common.DataTransportObjects.Accounts
 {
-    [CosmosContainer("Accounts")]
-    public class AccountEntity : BaseEntity, IAccountEntity
+    public class AccountDto : BaseDto
     {
         public string Title { get; set; }
         

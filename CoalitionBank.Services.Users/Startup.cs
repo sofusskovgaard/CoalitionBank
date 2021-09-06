@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoalitionBank.Handlers.Helpers;
-using CoalitionBank.Handlers.Helpers.Markers;
-using CoalitionBank.Handlers.Helpers.Services;
+﻿using System.Reflection;
+using CoalitionBank.Common.DataTransportObjects;
+using CoalitionBank.Handlers.Grpc.Helpers.Markers;
+using CoalitionBank.Handlers.Helpers.Utilities;
+using CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Server;
 
 namespace CoalitionBank.Services.Users
@@ -23,7 +19,9 @@ namespace CoalitionBank.Services.Users
         {
             services.AddCodeFirstGrpc();
 
-            services.AddScoped<ICommandHandlerResolverService, CommandHandlerResolverService>();
+            services.AddCommandHandlers<IGrpcCommandHandlerMarker>();
+
+            services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetAssembly(typeof(BaseDto))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,7 +36,7 @@ namespace CoalitionBank.Services.Users
 
             app.UseEndpoints(endpoints =>
             {
-                // endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<UsersGrpcService>();
                 endpoints.MapCodeFirstGrpcReflectionService();
             });
         }

@@ -1,5 +1,8 @@
+using CoalitionBank.Common.Attributes;
+
 namespace CoalitionBank.Common.Entities.Transactions
 {
+    [CosmosContainer("Transactions")]
     public class TransactionEntity : BaseEntity, ITransactionEntity
     {
         public string SenderAccount { get; set; }
