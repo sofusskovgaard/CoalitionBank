@@ -10,5 +10,15 @@ namespace CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService
     {
         [Operation]
         Task<GetUserCommandResult> GetUser(GetUserCommand command);
+        
+        [Operation]
+        Task<GetUsersCommandResult> GetUsers(GetUsersCommand command);
+
+        [Operation]
+        Task<CreateUserCommandResult> CreateUser(CreateUserCommand command);
+
+        [Operation]
+        Task<DeleteUserCommandResult> DeleteUser(DeleteUserCommand command);
+
     }
 }

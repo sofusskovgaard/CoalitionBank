@@ -10,16 +10,12 @@ namespace CoalitionBank.Common.DataTransportObjects
     {
         public BaseMapping()
         {
-            CreateMap<BaseEntity, BaseDto>()
-                .IncludeAllDerived()
+            CreateMap<TEntity, TDto>()
                 .ReverseMap();
 
             CreateMap<TEntity, TSensitiveDto>()
                 .ReverseMap();
-            
-            CreateMap<TEntity, TDto>()
-                .ReverseMap();
-            
+
             CreateMap<TSensitiveDto, TDto>()
                 .ReverseMap();
         }

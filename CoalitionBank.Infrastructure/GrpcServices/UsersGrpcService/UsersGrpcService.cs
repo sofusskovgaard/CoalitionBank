@@ -12,18 +12,33 @@ namespace CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService
     {
         private readonly IServiceScope _scope;
 
-        private readonly IMapper _mapper;
-
-        public UsersGrpcService(IServiceScopeFactory serviceScopeFactory, IMapper mapper)
+        public UsersGrpcService(IServiceScopeFactory serviceScopeFactory)
         {
             _scope = serviceScopeFactory.CreateScope();
-            _mapper = mapper;
         }
 
         public async Task<GetUserCommandResult> GetUser(GetUserCommand command)
         {
             var handler = _scope.Resolve<GetUserCommandHandler>();
-            return await handler.InvokeAsync(command);
+            return await handler.Invoke(command);
+        }
+
+        public async Task<GetUsersCommandResult> GetUsers(GetUsersCommand command)
+        {
+            var handler = _scope.Resolve<GetUsersCommandHandler>();
+            return await handler.Invoke(command);
+        }
+
+        public async Task<CreateUserCommandResult> CreateUser(CreateUserCommand command)
+        {
+            var handler = _scope.Resolve<CreateUserCommandHandler>();
+            return await handler.Invoke(command);
+        }
+
+        public async Task<DeleteUserCommandResult> DeleteUser(DeleteUserCommand command)
+        {
+            var handler = _scope.Resolve<DeleteUserCommandHandler>();
+            return await handler.Invoke(command);
         }
     }
 }

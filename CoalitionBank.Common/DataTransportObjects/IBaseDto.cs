@@ -2,8 +2,10 @@
 {
     public interface IBaseDto
     {
-        string RowKey { get; set; }
+        string Id { get; set; }
         
         string PartitionKey { get; set; }
+        
+        string ETag { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace CoalitionBank.API.Types
     {
         protected BaseType()
         {
-            Field(x => x.RowKey);
+            Field(x => x.Id);
             Field(x => x.PartitionKey);
         }
     }

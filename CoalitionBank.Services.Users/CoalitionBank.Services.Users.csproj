@@ -12,10 +12,10 @@
         <PackageReference Include="protobuf-net.BuildTools" Version="3.0.101" PrivateAssets="all" IncludeAssets="runtime;build;native;contentfiles;analyzers;buildtransitive" />
         <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
         <PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.152" />
+        <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CoalitionBank.Configuration\CoalitionBank.Configuration.csproj" />
         <ProjectReference Include="..\CoalitionBank.Data\CoalitionBank.Data.csproj" />
         <ProjectReference Include="..\CoalitionBank.Handlers\CoalitionBank.Handlers.csproj" />
         <ProjectReference Include="..\CoalitionBank.Infrastructure\CoalitionBank.Infrastructure.csproj" />

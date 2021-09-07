@@ -1,23 +1,51 @@
+using System;
 using System.Threading.Tasks;
 using CoalitionBank.Data.DataContext;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace CoalitionBank.Services.Users
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
 #if DEBUG
+            Log.Information("Getting development configuration for seeder.");
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json").Build();
 #else
+            Log.Information("Getting production configuration for seeder.");
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 #endif
+            
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .CreateLogger();
 
+            Log.Information("Ensuring database created");
             await DataContext.EnsureDatabaseCreate(configuration);
-            await CreateHostBuilder(args).Build().RunAsync();
+            
+            try
+            {
+                Log.Information("Starting web host");
+                await CreateHostBuilder(args).Build().RunAsync();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         // Additional configuration is required to successfully run gRPC on macOS.
@@ -25,6 +53,7 @@ namespace CoalitionBank.Services.Users
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         }
     }

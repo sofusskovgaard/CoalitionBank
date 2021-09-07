@@ -7,8 +7,6 @@ namespace CoalitionBank.Handlers.Helpers
         where TCommand : ICommandMarker
         where TCommandResult : ICommandResultMarker
     {
-        TCommandResult Invoke(TCommand command);
-
-        Task<TCommandResult> InvokeAsync(TCommand command);
+        Task<TCommandResult> Invoke(TCommand command);
     }
 }

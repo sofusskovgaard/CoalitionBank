@@ -6,18 +6,21 @@ namespace CoalitionBank.Common.DataTransportObjects.Users
     public class UserDto : BaseDto
     {
         [ProtoMember(1)]
-        public string RowKey { get; set; }
-
+        public override string Id { get; set; }
+        
         [ProtoMember(2)]
-        public string PartitionKey { get; set; }
-
+        public override string PartitionKey { get; set; }
+        
         [ProtoMember(3)]
+        public override string ETag { get; set; }
+        
+        [ProtoMember(4)]
         public string Firstname { get; set; }
 
-        [ProtoMember(4)]
+        [ProtoMember(5)]
         public string Lastname { get; set; }
 
-        [ProtoMember(5)]
+        [ProtoMember(6)]
         public string Email { get; set; }
     }
 }

@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
       <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
       <PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.152" />
     </ItemGroup>
