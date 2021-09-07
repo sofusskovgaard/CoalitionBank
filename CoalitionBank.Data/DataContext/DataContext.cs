@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -27,7 +28,16 @@ namespace CoalitionBank.Data.DataContext
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                     IgnoreNullValues = true,
                     IgnoreReadOnlyFields = true
-                })
+                }),
+            HttpClientFactory = () =>
+            {
+                HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
+                };
+                return new HttpClient(httpMessageHandler);
+            },
+            ConnectionMode = ConnectionMode.Gateway
         };
 
         private readonly CosmosClient _client;
@@ -62,7 +72,7 @@ namespace CoalitionBank.Data.DataContext
             while (feed.HasMoreResults && result == null)
             {
                 var response = await feed.ReadNextAsync();
-                _logger.Information($"Charge: {response.RequestCharge}");
+                _logger.Information($"[{nameof(Get)}] Charge: {response.RequestCharge}");
                 foreach (var item in response)
                     result = item;
             }
@@ -86,7 +96,7 @@ namespace CoalitionBank.Data.DataContext
             while (feed.HasMoreResults && result.Count != pageSize)
             {
                 var response = await feed.ReadNextAsync();
-                _logger.Information($"Charge: {response.RequestCharge}");
+                _logger.Information($"[{nameof(Get)}] Charge: {response.RequestCharge}");
                 foreach (var item in response)
                     result.Add(item);
             }
@@ -105,7 +115,15 @@ namespace CoalitionBank.Data.DataContext
         {
             var container = GetContainerFromEntity<T>();
             var response = await container.CreateItemAsync(entity, new PartitionKey(entity.PartitionKey));
-            _logger.Information($"Charge: {response.RequestCharge}");
+            _logger.Information($"[{nameof(Create)}] Charge: {response.RequestCharge}");
+            return response.Resource;
+        }
+
+        public async Task<T> Update<T>(T entity) where T : BaseEntity
+        {
+            var container = GetContainerFromEntity<T>();
+            var response = await container.ReplaceItemAsync(entity, entity.Id, new PartitionKey(entity.PartitionKey));
+            _logger.Information($"[{nameof(Update)}] Charge: {response.RequestCharge}");
             return response.Resource;
         }
 

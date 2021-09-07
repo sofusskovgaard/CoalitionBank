@@ -22,5 +22,8 @@ namespace CoalitionBank.Common.DataTransportObjects.Users
 
         [ProtoMember(6)]
         public string Email { get; set; }
+        
+        [ProtoMember(7)]
+        public string Password { get; set; }
     }
 }

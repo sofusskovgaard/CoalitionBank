@@ -3,5 +3,5 @@ using CoalitionBank.Common.Entities.Users;
 
 namespace CoalitionBank.Common.DataTransportObjects.Users
 {
-    public class UserMapping : BaseMapping<UserEntity, UserDto, SensitiveUserDto> { }
+    public class UserMapping : BaseMapping<UserEntity, UserDto> { }
 }

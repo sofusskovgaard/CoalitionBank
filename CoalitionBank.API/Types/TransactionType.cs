@@ -1,8 +1,9 @@
+using CoalitionBank.Common.DataTransportObjects.Transactions;
 using CoalitionBank.Common.Entities.Transactions;
 
 namespace CoalitionBank.API.Types
 {
-    public class TransactionType : BaseType<TransactionEntity>
+    public class TransactionType : BaseType<TransactionDto>
     {
         public TransactionType()
         {

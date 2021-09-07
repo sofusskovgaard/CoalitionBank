@@ -1,0 +1,50 @@
+﻿version: "3.9"
+
+services:
+  api-service:
+    build:
+      context: .
+      dockerfile: CoalitionBank.API/Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    networks:
+      - coalitionbank
+    depends_on:
+      - users-service
+
+  users-service:
+    build:
+      context: .
+      dockerfile: CoalitionBank.Services.Users/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    networks:
+      - coalitionbank
+    depends_on:
+      - cosmos
+      
+  cosmos:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+    ports:
+      - "8081:8081"
+      - "10251:10251"
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+    networks:
+      - coalitionbank
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 8192M
+        reservations:
+          cpus: "2.0"
+          memory: 3072M
+
+networks:
+  coalitionbank:

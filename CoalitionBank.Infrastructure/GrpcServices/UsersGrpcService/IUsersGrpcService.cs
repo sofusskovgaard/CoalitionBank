@@ -19,6 +19,9 @@ namespace CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService
 
         [Operation]
         Task<DeleteUserCommandResult> DeleteUser(DeleteUserCommand command);
+        
+        [Operation]
+        Task<UpdateUserCommandResult> UpdateUser(UpdateUserCommand command);
 
     }
 }

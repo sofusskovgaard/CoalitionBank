@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using CoalitionBank.Common.DataTransportObjects.Users;
 using CoalitionBank.Common.Entities.Users;
@@ -29,7 +30,7 @@ namespace CoalitionBank.Services.Testing
             var service = channel.CreateGrpcService<IUsersGrpcService>();
             var sw = new Stopwatch();
             sw.Start();
-            var result = await service.GetUser(new GetUserCommand() { Id = "ADXGbhK71EyRuAIXOgdA3g", PartitionKey = "global" });
+            var result = await service.GetUser(new GetUserCommand() { Id = "BIXJdTL3IkO0CGuIhzhyLQ", PartitionKey = "global" });
             sw.Stop();
             output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
             output.WriteLine(JsonConvert.SerializeObject(result.User));
@@ -56,11 +57,11 @@ namespace CoalitionBank.Services.Testing
             using var channel = GrpcChannel.ForAddress("http://localhost:5001");
             var service = channel.CreateGrpcService<IUsersGrpcService>();
 
-            var entity = new SensitiveUserDto()
+            var entity = new UserDto()
             {
-                Firstname = "Balls",
+                Firstname = "Crusty",
                 Lastname = "McNutsack",
-                Email = "balls@mcnutsack.com",
+                Email = "crusty@mcnutsacc.com",
                 Password = "Test123!"
             };
             
@@ -88,6 +89,28 @@ namespace CoalitionBank.Services.Testing
 
             output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
             output.WriteLine(JsonConvert.SerializeObject(result.Success));
+        }
+        
+        [Fact]
+        public async Task UpdateUser()
+        {
+            GrpcClientFactory.AllowUnencryptedHttp2 = true;
+            using var channel = GrpcChannel.ForAddress("http://localhost:5001");
+            var service = channel.CreateGrpcService<IUsersGrpcService>();
+
+            var userResult = await service.GetUsers(new GetUsersCommand() { PageSize = 1 });
+
+            var user = userResult.Users.First();
+
+            user.Firstname = "Cunt shit fuck";
+            
+            var sw = new Stopwatch();
+            sw.Start();
+            var result = await service.UpdateUser(new UpdateUserCommand() { Entity = user });
+            sw.Stop();
+
+            output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
+            output.WriteLine(JsonConvert.SerializeObject(result.Entity));
         }
     }
 }

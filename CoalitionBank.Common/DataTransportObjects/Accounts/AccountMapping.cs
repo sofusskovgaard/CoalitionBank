@@ -2,5 +2,5 @@
 
 namespace CoalitionBank.Common.DataTransportObjects.Accounts
 {
-    public class AccountMapping : BaseMapping<AccountEntity, AccountDto, SensitiveAccountDto> { }
+    public class AccountMapping : BaseMapping<AccountEntity, AccountDto> { }
 }

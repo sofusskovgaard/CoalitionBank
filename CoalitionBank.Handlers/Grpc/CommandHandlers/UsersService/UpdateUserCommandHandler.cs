@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using CoalitionBank.Common.DataTransportObjects.Users;
 using CoalitionBank.Common.Entities.Users;
@@ -10,19 +10,19 @@ using CoalitionBank.Handlers.Grpc.Helpers;
 
 namespace CoalitionBank.Handlers.Grpc.CommandHandlers.UsersService
 {
-    public class CreateUserCommandHandler : GrpcCommandHandler<CreateUserCommand, CreateUserCommandResult>
+    public class UpdateUserCommandHandler : GrpcCommandHandler<UpdateUserCommand, UpdateUserCommandResult>
     {
         private readonly IDataContext _dataContext;
 
         private readonly IMapper _mapper;
 
-        public CreateUserCommandHandler(IDataContext dataContext, IMapper mapper)
+        public UpdateUserCommandHandler(IDataContext dataContext, IMapper mapper)
         {
             _dataContext = dataContext;
             _mapper = mapper;
         }
 
-        public override async Task<CreateUserCommandResult> Invoke(CreateUserCommand command)
+        public override async Task<UpdateUserCommandResult> Invoke(UpdateUserCommand command)
         {
             var _entity = _mapper.Map<UserEntity>(command.Entity);
 
@@ -32,9 +32,9 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.UsersService
             if (string.IsNullOrEmpty(_entity.PartitionKey))
                 _entity.PartitionKey = "global";
             
-            var entity = await _dataContext.Create(_entity);
+            var entity = await _dataContext.Update(_entity);
             var dto = _mapper.Map<UserDto>(entity);
-            return new CreateUserCommandResult() { Entity = dto };
+            return new UpdateUserCommandResult() { Entity = dto };
         }
     }
 }

@@ -14,13 +14,8 @@ namespace CoalitionBank.Services.Users
     {
         public static async Task<int> Main(string[] args)
         {
-#if DEBUG
-            Log.Information("Getting development configuration for seeder.");
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json").Build();
-#else
-            Log.Information("Getting production configuration for seeder.");
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-#endif
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var isDevelopment = environment == Environments.Development;
             
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -28,8 +23,21 @@ namespace CoalitionBank.Services.Users
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
 
+            var configuration = new ConfigurationBuilder();
+
+            if (isDevelopment)
+            {
+                Log.Information("Getting development configuration for seeder.");
+                configuration.AddJsonFile("appsettings.Development.json");
+            }
+            else
+            {
+                Log.Information("Getting production configuration for seeder.");
+                configuration.AddJsonFile("appsettings.json");
+            }
+            
             Log.Information("Ensuring database created");
-            await DataContext.EnsureDatabaseCreate(configuration);
+            await DataContext.EnsureDatabaseCreate(configuration.Build());
             
             try
             {

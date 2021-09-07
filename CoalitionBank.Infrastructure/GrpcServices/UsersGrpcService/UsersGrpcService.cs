@@ -40,5 +40,11 @@ namespace CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService
             var handler = _scope.Resolve<DeleteUserCommandHandler>();
             return await handler.Invoke(command);
         }
+
+        public async Task<UpdateUserCommandResult> UpdateUser(UpdateUserCommand command)
+        {
+            var handler = _scope.Resolve<UpdateUserCommandHandler>();
+            return await handler.Invoke(command);
+        }
     }
 }

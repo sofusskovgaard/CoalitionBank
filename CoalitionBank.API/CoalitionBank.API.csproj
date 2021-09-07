@@ -10,10 +10,13 @@
       <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="5.0.2" />
       <PackageReference Include="GraphQL.Server.Transports.AspNetCore.SystemTextJson" Version="5.0.2" />
       <PackageReference Include="GraphQL.Server.Ui.Playground" Version="5.0.2" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.39.0" />
+      <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\CoalitionBank.Common\CoalitionBank.Common.csproj" />
+      <ProjectReference Include="..\CoalitionBank.Infrastructure\CoalitionBank.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

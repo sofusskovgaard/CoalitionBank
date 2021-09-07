@@ -1,11 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsbuildVersion/@EntryValue">4294967293</s:Int64>
 	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue">/usr/local/share/dotnet/sdk/5.0.302/MSBuild.dll</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f384de69_002De19f_002D47ba_002D9df2_002Dce031d181fee/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Services_Users_Greet" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.CreateUser&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.GetUser&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.GetUsers&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.DeleteUser&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f384de69_002De19f_002D47ba_002D9df2_002Dce031d181fee/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Services_Users_Greet" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.CreateUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.GetUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.GetUsers&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.DeleteUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.UpdateUser&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

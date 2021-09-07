@@ -3,5 +3,5 @@ using CoalitionBank.Common.Entities.Transactions;
 
 namespace CoalitionBank.Common.DataTransportObjects.Transactions
 {
-    public class TransactionMapping : BaseMapping<TransactionEntity, TransactionDto, SensitiveTransactionDto> { }
+    public class TransactionMapping : BaseMapping<TransactionEntity, TransactionDto> { }
 }

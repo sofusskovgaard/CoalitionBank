@@ -1,9 +1,10 @@
+using CoalitionBank.Common.DataTransportObjects.Users;
 using CoalitionBank.Common.Entities.Users;
 using GraphQL.Types;
 
 namespace CoalitionBank.API.Types
 {
-    public class UserType : BaseType<UserEntity>
+    public class UserType : BaseType<UserDto>
     {
         public UserType()
         {
