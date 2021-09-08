@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CoalitionBank.Common.DataTransportObjects.Transactions;
 using CoalitionBank.Common.Entities.Transactions;
+using CoalitionBank.Common.Helpers;
 using CoalitionBank.Data.DataContext;
 using CoalitionBank.Handlers.Grpc.CommandResults.TransactionsService;
 using CoalitionBank.Handlers.Grpc.Commands.TransactionsService;
@@ -26,8 +27,11 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.TransactionsService
 
         public override async Task<CreateTransactionCommandResult> Invoke(CreateTransactionCommand command)
         {
-            var _senderTransaction = _mapper.Map<TransactionEntity>(command.SenderTransaction);
-            var _receiverTransaction = _mapper.Map<TransactionEntity>(command.ReceiverTransaction);
+            var _senderTransaction = _mapper.Map<TransactionEntity>(command.Entity);
+            var _receiverTransaction = _mapper.Map<TransactionEntity>(command.Entity);
+            _senderTransaction.PartitionKey = _senderTransaction.SenderAccount;
+            _receiverTransaction.PartitionKey = _senderTransaction.ReceiverAccount;
+            _receiverTransaction.Id = UUIDGenerator.Generate();
 
             var result = await _dataContext.CreateMany(new[] { _senderTransaction, _receiverTransaction });
             

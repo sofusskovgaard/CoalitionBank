@@ -1,3 +1,5 @@
+using System;
+
 namespace CoalitionBank.Common.Entities.Transactions
 {
     public interface ITransactionEntity : IBaseEntity

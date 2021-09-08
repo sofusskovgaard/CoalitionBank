@@ -9,5 +9,7 @@ namespace CoalitionBank.Common.Entities.Accounts
         string[] UsersWithAccess { get; set; }
         
         decimal Balance { get; set; }
+        
+        string LastKnownTransaction { get; set; }
     }
 }

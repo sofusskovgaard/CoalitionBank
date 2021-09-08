@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoalitionBank.API.Types;
+using CoalitionBank.Infrastructure.GrpcServices.AccountsGrpcService;
+using CoalitionBank.Infrastructure.GrpcServices.TransactionsGrpcService;
 using CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
@@ -35,6 +37,16 @@ namespace CoalitionBank.API
             services.AddCodeFirstGrpcClient<IUsersGrpcService>(options =>
             {
                 options.Address = new Uri(System.Environment.GetEnvironmentVariable("USERS_SERVICE_URI"));
+            });
+            
+            services.AddCodeFirstGrpcClient<ITransactionsGrpcService>(options =>
+            {
+                options.Address = new Uri(System.Environment.GetEnvironmentVariable("TRANSACTIONS_SERVICE_URI"));
+            });
+            
+            services.AddCodeFirstGrpcClient<IAccountsGrpcService>(options =>
+            {
+                options.Address = new Uri(System.Environment.GetEnvironmentVariable("ACCOUNTS_SERVICE_URI"));
             });
 
             services.AddGraphQL((options, provider) =>

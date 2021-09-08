@@ -34,16 +34,10 @@ namespace CoalitionBank.Services.Users
             services.AddCodeFirstGrpc();
             
             // add other services.
-            services.AddSingleton<IDataContext>(provider => new DataContext(provider.GetRequiredService<IConfiguration>(), provider.GetRequiredService<ILogger>()));
+            services.AddSingleton<IDataContext>(provider => new DataContext(provider.GetRequiredService<ILogger>()));
             
             // add command handlers.
             services.AddCommandHandlers<IGrpcCommandHandlerMarker>();
-
-            // newtonsoft bullshit
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings()
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

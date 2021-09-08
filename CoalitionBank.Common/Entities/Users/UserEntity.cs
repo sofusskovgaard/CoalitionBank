@@ -6,7 +6,6 @@ using ProtoBuf;
 
 namespace CoalitionBank.Common.Entities.Users
 {
-    [ProtoContract]
     [CosmosContainer("Users")]
     public class UserEntity : BaseEntity, IUserEntity
     {
@@ -22,17 +21,13 @@ namespace CoalitionBank.Common.Entities.Users
             PartitionKey = "global";
         }
 
-        [ProtoMember(4)]
         public string Firstname { get; set; }
         
-        [ProtoMember(5)]
         public string Lastname { get; set; }
         
-        [ProtoMember(6)]
         [CosmosUniqueKey]
         public string Email { get; set; }
         
-        [ProtoMember(7)]
         public string Password { get; set; }
     }
 }

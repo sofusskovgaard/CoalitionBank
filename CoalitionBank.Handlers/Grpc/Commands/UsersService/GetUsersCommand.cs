@@ -1,4 +1,4 @@
-using CoalitionBank.Handlers.Grpc.Helpers.Markers;
+using CoalitionBank.Common.Commands;
 using ProtoBuf;
 
 namespace CoalitionBank.Handlers.Grpc.Commands.UsersService

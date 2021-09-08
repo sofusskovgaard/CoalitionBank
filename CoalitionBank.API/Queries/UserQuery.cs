@@ -13,11 +13,11 @@ namespace CoalitionBank.API.Queries
 {
     public class UserQuery : ObjectGraphType<object>, IGraphQueryMarker
     {
-        private readonly IUsersGrpcService _usersGrpcService;
+        private readonly IUsersGrpcService _usersService;
         
         public UserQuery(IServiceProvider provider)
         {
-            _usersGrpcService = provider.GetService<IUsersGrpcService>();
+            _usersService = provider.GetService<IUsersGrpcService>();
             
             FieldAsync<UserType>("user",
                 arguments: new SpecificQueryArguments(),
@@ -28,7 +28,7 @@ namespace CoalitionBank.API.Queries
                         Id = (string)context.Arguments["id"].Value,
                         PartitionKey = (string)context.Arguments["partitionKey"].Value
                     };
-                    var result = await _usersGrpcService.GetUser(command);
+                    var result = await _usersService.GetUser(command);
                     return result.User;
                 });
 
@@ -40,7 +40,7 @@ namespace CoalitionBank.API.Queries
                         Page = (int)context.Arguments["page"].Value,
                         PageSize = (int)context.Arguments["pageSize"].Value
                     };
-                    var result = await _usersGrpcService.GetUsers(command);
+                    var result = await _usersService.GetUsers(command);
                     return result.Users;
                 });
         }

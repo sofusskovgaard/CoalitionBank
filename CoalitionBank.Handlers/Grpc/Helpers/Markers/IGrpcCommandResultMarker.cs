@@ -1,6 +1,6 @@
 using CoalitionBank.Handlers.Helpers.Markers;
 
-namespace CoalitionBank.Handlers.Grpc.Helpers.Markers
+namespace CoalitionBank.Common.CommandResults
 {
     public interface IGrpcCommandResultMarker : ICommandResultMarker
     {

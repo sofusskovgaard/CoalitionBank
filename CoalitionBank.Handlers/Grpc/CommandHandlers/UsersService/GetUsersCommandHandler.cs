@@ -26,7 +26,8 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.UsersService
         public override async Task<GetUsersCommandResult> Invoke(GetUsersCommand command)
         {
             var entities = await _dataContext.Get<UserEntity>("global", command.Page, command.PageSize);
-            return new GetUsersCommandResult() { Users = _mapper.Map<IEnumerable<UserDto>>(entities) };
+            var dtos = _mapper.Map<IEnumerable<UserDto>>(entities);
+            return new GetUsersCommandResult() { Users = dtos };
         }
     }
 }

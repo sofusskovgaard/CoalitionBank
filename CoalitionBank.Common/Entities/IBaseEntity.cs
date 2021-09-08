@@ -1,3 +1,5 @@
+using System;
+
 namespace CoalitionBank.Common.Entities
 {
     public interface IBaseEntity
@@ -7,5 +9,7 @@ namespace CoalitionBank.Common.Entities
         string PartitionKey { get; set; }
         
         string ETag { get; set; }
+        
+        DateTime CreatedAt { get; set; }
     }
 }

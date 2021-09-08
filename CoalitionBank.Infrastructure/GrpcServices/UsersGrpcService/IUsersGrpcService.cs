@@ -13,6 +13,9 @@ namespace CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService
         
         [Operation]
         Task<GetUsersCommandResult> GetUsers(GetUsersCommand command);
+        
+        [Operation]
+        Task<GetSpecificUsersCommandResult> GetSpecificUsers(GetSpecificUsersCommand command);
 
         [Operation]
         Task<CreateUserCommandResult> CreateUser(CreateUserCommand command);

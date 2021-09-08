@@ -22,6 +22,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoalitionBank.Services.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoalitionBank.Infrastructure", "CoalitionBank.Infrastructure\CoalitionBank.Infrastructure.csproj", "{EAAB82BE-702A-46F8-A124-07CECABFAE7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoalitionBank.Services.Transactions", "CoalitionBank.Services.Transactions\CoalitionBank.Services.Transactions.csproj", "{5F3E1942-AE7B-4D13-B224-3DB4A327DE13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoalitionBank.Services.Accounts", "CoalitionBank.Services.Accounts\CoalitionBank.Services.Accounts.csproj", "{399D6DA4-0299-414B-8849-9D06A47125EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,14 @@ Global
 		{EAAB82BE-702A-46F8-A124-07CECABFAE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAAB82BE-702A-46F8-A124-07CECABFAE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAAB82BE-702A-46F8-A124-07CECABFAE7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3E1942-AE7B-4D13-B224-3DB4A327DE13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3E1942-AE7B-4D13-B224-3DB4A327DE13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3E1942-AE7B-4D13-B224-3DB4A327DE13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3E1942-AE7B-4D13-B224-3DB4A327DE13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399D6DA4-0299-414B-8849-9D06A47125EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399D6DA4-0299-414B-8849-9D06A47125EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399D6DA4-0299-414B-8849-9D06A47125EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399D6DA4-0299-414B-8849-9D06A47125EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{73F6FF69-DFD2-46F8-94DE-9D0D1952681A} = {E2711B8D-E436-487B-88DB-8CC0EBDD103E}
@@ -66,5 +78,7 @@ Global
 		{2FD2EFD1-CD2C-45B0-952D-3B4AB8CC8E14} = {FC1EEC71-6B48-4B9E-BBE0-2A80100A3649}
 		{ADE608A1-FCC6-449E-9B21-D695D2CFAA31} = {2FD2EFD1-CD2C-45B0-952D-3B4AB8CC8E14}
 		{EAAB82BE-702A-46F8-A124-07CECABFAE7D} = {EECFE59D-E605-42EE-85CC-7DCACA433865}
+		{5F3E1942-AE7B-4D13-B224-3DB4A327DE13} = {FC1EEC71-6B48-4B9E-BBE0-2A80100A3649}
+		{399D6DA4-0299-414B-8849-9D06A47125EB} = {FC1EEC71-6B48-4B9E-BBE0-2A80100A3649}
 	EndGlobalSection
 EndGlobal

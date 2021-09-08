@@ -1,5 +1,5 @@
+using CoalitionBank.Common.CommandResults;
 using CoalitionBank.Common.DataTransportObjects.Transactions;
-using CoalitionBank.Handlers.Grpc.Helpers.Markers;
 using ProtoBuf;
 
 namespace CoalitionBank.Handlers.Grpc.CommandResults.TransactionsService

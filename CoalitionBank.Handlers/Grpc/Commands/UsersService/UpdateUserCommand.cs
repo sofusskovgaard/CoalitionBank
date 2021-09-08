@@ -1,5 +1,5 @@
-﻿using CoalitionBank.Common.DataTransportObjects.Users;
-using CoalitionBank.Handlers.Grpc.Helpers.Markers;
+﻿using CoalitionBank.Common.Commands;
+using CoalitionBank.Common.DataTransportObjects.Users;
 using ProtoBuf;
 
 namespace CoalitionBank.Handlers.Grpc.Commands.UsersService

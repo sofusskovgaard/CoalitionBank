@@ -11,6 +11,7 @@ namespace CoalitionBank.API.Types
             Field(x => x.Id);
             Field(x => x.PartitionKey);
             Field(x => x.ETag);
+            Field(x => x.CreatedAt);
         }
     }
 }

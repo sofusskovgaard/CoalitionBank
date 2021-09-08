@@ -25,13 +25,6 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.UsersService
         public override async Task<UpdateUserCommandResult> Invoke(UpdateUserCommand command)
         {
             var _entity = _mapper.Map<UserEntity>(command.Entity);
-
-            if (string.IsNullOrEmpty(_entity.Id))
-                _entity.Id = UUIDGenerator.Generate();
-
-            if (string.IsNullOrEmpty(_entity.PartitionKey))
-                _entity.PartitionKey = "global";
-            
             var entity = await _dataContext.Update(_entity);
             var dto = _mapper.Map<UserDto>(entity);
             return new UpdateUserCommandResult() { Entity = dto };

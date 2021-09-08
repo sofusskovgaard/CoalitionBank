@@ -29,6 +29,12 @@ namespace CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService
             return await handler.Invoke(command);
         }
 
+        public async Task<GetSpecificUsersCommandResult> GetSpecificUsers(GetSpecificUsersCommand command)
+        {
+            var handler = _scope.Resolve<GetSpecificUsersCommandHandler>();
+            return await handler.Invoke(command);
+        }
+
         public async Task<CreateUserCommandResult> CreateUser(CreateUserCommand command)
         {
             var handler = _scope.Resolve<CreateUserCommandHandler>();

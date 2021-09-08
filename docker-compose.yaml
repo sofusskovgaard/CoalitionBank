@@ -7,13 +7,15 @@ services:
       dockerfile: CoalitionBank.API/Dockerfile
     ports:
       - "5000:80"
-    environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
-      USERS_SERVICE_URI: "http://localhost:5001"
+    env_file:
+      - ./env/common.env
+      - ./env/gateway.env
     networks:
       - coalitionbank
     depends_on:
       - users-service
+      - transactions-service
+      - accounts-service
 
   users-service:
     build:
@@ -21,9 +23,37 @@ services:
       dockerfile: CoalitionBank.Services.Users/Dockerfile
     ports:
       - "5001:80"
-    environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
-      COSMOS_URI: "https://cosmos:8081"
+    env_file:
+      - ./env/common.env
+      - ./env/service.env
+    networks:
+      - coalitionbank
+    depends_on:
+      - cosmos
+        
+  transactions-service:
+    build:
+      context: .
+      dockerfile: CoalitionBank.Services.Transactions/Dockerfile
+    ports:
+      - "5002:80"
+    env_file:
+      - ./env/common.env
+      - ./env/service.env
+    networks:
+      - coalitionbank
+    depends_on:
+      - cosmos
+    
+  accounts-service:
+    build:
+      context: .
+      dockerfile: CoalitionBank.Services.Accounts/Dockerfile
+    ports:
+      - "5003:80"
+    env_file:
+      - ./env/common.env
+      - ./env/service.env
     networks:
       - coalitionbank
     depends_on:

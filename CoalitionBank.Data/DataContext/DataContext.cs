@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -10,7 +12,6 @@ using CoalitionBank.Common.Entities;
 using CoalitionBank.Data.Helpers;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
-using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace CoalitionBank.Data.DataContext
@@ -31,7 +32,7 @@ namespace CoalitionBank.Data.DataContext
                 }),
             HttpClientFactory = () =>
             {
-                HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+                HttpMessageHandler httpMessageHandler = new HttpClientHandler
                 {
                     ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
                 };
@@ -43,18 +44,16 @@ namespace CoalitionBank.Data.DataContext
         private readonly CosmosClient _client;
 
         private readonly Database _database;
-        
-        private readonly IConfiguration _configuration;
 
         private readonly ILogger _logger;
 
-        public DataContext(IConfiguration configuration, ILogger logger)
+        public DataContext(ILogger logger)
         {
-            _configuration = configuration;
             _logger = logger;
-            
+
             _client = CreateClient();
-            _database = _client.CreateDatabaseIfNotExistsAsync(configuration["CosmosDB:Database"]).Result;
+            _database = _client.CreateDatabaseIfNotExistsAsync(Environment.GetEnvironmentVariable("COSMOS_DATABASE"))
+                .Result;
         }
 
         public async Task<T> Get<T>(string Id, string PartitionKey = null) where T : BaseEntity
@@ -76,10 +75,34 @@ namespace CoalitionBank.Data.DataContext
                 foreach (var item in response)
                     result = item;
             }
+
             return result;
         }
 
-        public async Task<IEnumerable<T>> Get<T>(string PartitionKey = null, int page = 1, int pageSize = 10) where T : BaseEntity
+        public async Task<IEnumerable<T>> Get<T>(IEnumerable<string> Id, string PartitionKey = null) where T : BaseEntity
+        {
+            var result = new List<T>();
+            var container = GetContainerFromEntity<T>();
+
+            var query = container.GetItemLinqQueryable<T>(linqSerializerOptions: _serializerOptions).Where(entity => Id.Contains(entity.Id));
+
+            if (!string.IsNullOrEmpty(PartitionKey)) query = query.Where(entity => entity.PartitionKey == PartitionKey);
+
+            using var feed = query.ToFeedIterator();
+
+            while (feed.HasMoreResults)
+            {
+                var response = await feed.ReadNextAsync();
+                _logger.Information($"[{nameof(Get)}] Charge: {response.RequestCharge}");
+                foreach (var item in response)
+                    result.Add(item);
+            }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<T>> Get<T>(string PartitionKey = null, int page = 1, int pageSize = 10)
+            where T : BaseEntity
         {
             var result = new List<T>();
             var container = GetContainerFromEntity<T>();
@@ -87,9 +110,13 @@ namespace CoalitionBank.Data.DataContext
             IQueryable<T> query = null;
 
             if (!string.IsNullOrEmpty(PartitionKey))
-                query = container.GetItemLinqQueryable<T>(linqSerializerOptions: _serializerOptions).Where(entity => entity.PartitionKey == PartitionKey);
+                query = container.GetItemLinqQueryable<T>(linqSerializerOptions: _serializerOptions)
+                    .Where(entity => entity.PartitionKey == PartitionKey);
 
-            query = query != null ? query.Skip((page - 1) * pageSize).Take(pageSize) : container.GetItemLinqQueryable<T>(linqSerializerOptions: _serializerOptions).Skip((page - 1) * pageSize).Take(pageSize);
+            query = query != null
+                ? query.Skip((page - 1) * pageSize).Take(pageSize)
+                : container.GetItemLinqQueryable<T>(linqSerializerOptions: _serializerOptions)
+                    .Skip((page - 1) * pageSize).Take(pageSize);
 
             using var feed = query.ToFeedIterator();
 
@@ -100,6 +127,32 @@ namespace CoalitionBank.Data.DataContext
                 foreach (var item in response)
                     result.Add(item);
             }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<T>> GetFrom<T>(string Id, string PartitionKey) where T : BaseEntity
+        {
+            var result = new List<T>();
+            var container = GetContainerFromEntity<T>();
+
+            var query = container.GetItemLinqQueryable<T>(linqSerializerOptions: _serializerOptions)
+                .OrderByDescending(entity => entity.CreatedAt).Where(entity => entity.PartitionKey == PartitionKey)
+                .SkipWhile(entity => entity.Id != Id);
+
+            using var feed = query.ToFeedIterator();
+
+            while (feed.HasMoreResults)
+            {
+                var response = await feed.ReadNextAsync();
+                _logger.Information($"[{nameof(Get)}] Charge: {response.RequestCharge}");
+                foreach (var item in response)
+                {
+                    if (item.Id == Id) continue;
+                    result.Add(item);   
+                }
+            }
+
             return result;
         }
 
@@ -123,7 +176,7 @@ namespace CoalitionBank.Data.DataContext
         {
             var container = GetContainerFromEntity<T>();
             var result = new List<T>();
-            
+
             foreach (var entity in entities)
             {
                 var response = await container.CreateItemAsync(entity, new PartitionKey(entity.PartitionKey));
@@ -142,11 +195,12 @@ namespace CoalitionBank.Data.DataContext
             return response.Resource;
         }
 
-        public static async Task EnsureDatabaseCreate(IConfiguration configuration)
+        public static async Task EnsureDatabaseCreate()
         {
-            using var client = new CosmosClient(configuration["CosmosDB:EntryPoint"],
-                configuration["CosmosDB:PrimaryKey"], _clientOptions);
-            Database database = await client.CreateDatabaseIfNotExistsAsync(configuration["CosmosDB:Database"]);
+            using var client = new CosmosClient(Environment.GetEnvironmentVariable("COSMOS_ENTRYPOINT"),
+                Environment.GetEnvironmentVariable("COSMOS_PRIMARYKEY"), _clientOptions);
+            Database database =
+                await client.CreateDatabaseIfNotExistsAsync(Environment.GetEnvironmentVariable("COSMOS_DATABASE"));
 
             foreach (var entityType in EntityDiscovery.Discover())
             {
@@ -155,12 +209,11 @@ namespace CoalitionBank.Data.DataContext
 
                 var container = database.DefineContainer(attr.Name, attr.PartiotionKeyPath);
 
-                foreach (var property in entityType.GetProperties().Where(x => x.GetCustomAttribute<CosmosUniqueKey>() != null))
-                {
+                foreach (var property in entityType.GetProperties()
+                    .Where(x => x.GetCustomAttribute<CosmosUniqueKey>() != null))
                     container.WithUniqueKey()
                         .Path($"/{char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1)}")
                         .Attach();
-                }
 
                 await container.CreateIfNotExistsAsync();
             }
@@ -168,7 +221,8 @@ namespace CoalitionBank.Data.DataContext
 
         private CosmosClient CreateClient()
         {
-            return new CosmosClient(_configuration["CosmosDB:EntryPoint"], _configuration["CosmosDB:PrimaryKey"],
+            return new CosmosClient(Environment.GetEnvironmentVariable("COSMOS_ENTRYPOINT"),
+                Environment.GetEnvironmentVariable("COSMOS_PRIMARYKEY"),
                 _clientOptions);
         }
 

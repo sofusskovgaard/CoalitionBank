@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using System;
+using ProtoBuf;
 
 namespace CoalitionBank.Common.DataTransportObjects.Transactions
 {
@@ -15,12 +16,15 @@ namespace CoalitionBank.Common.DataTransportObjects.Transactions
         public override string ETag { get; set; }
         
         [ProtoMember(4)]
-        public string SenderAccount { get; set; }
+        public override DateTime CreatedAt { get; set; }
         
         [ProtoMember(5)]
-        public string ReceiverAccount { get; set; }
+        public string SenderAccount { get; set; }
         
         [ProtoMember(6)]
+        public string ReceiverAccount { get; set; }
+        
+        [ProtoMember(7)]
         public decimal Amount { get; set; }
     }
 }

@@ -14,30 +14,14 @@ namespace CoalitionBank.Services.Users
     {
         public static async Task<int> Main(string[] args)
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            var isDevelopment = environment == Environments.Development;
-            
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
 
-            var configuration = new ConfigurationBuilder();
-
-            if (isDevelopment)
-            {
-                Log.Information("Getting development configuration for seeder.");
-                configuration.AddJsonFile("appsettings.Development.json");
-            }
-            else
-            {
-                Log.Information("Getting production configuration for seeder.");
-                configuration.AddJsonFile("appsettings.json");
-            }
-            
             Log.Information("Ensuring database created");
-            await DataContext.EnsureDatabaseCreate(configuration.Build());
+            await DataContext.EnsureDatabaseCreate();
             
             try
             {

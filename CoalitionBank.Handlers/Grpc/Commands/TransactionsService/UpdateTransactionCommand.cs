@@ -1,5 +1,5 @@
+using CoalitionBank.Common.Commands;
 using CoalitionBank.Common.DataTransportObjects.Transactions;
-using CoalitionBank.Handlers.Grpc.Helpers.Markers;
 using ProtoBuf;
 
 namespace CoalitionBank.Handlers.Grpc.Commands.TransactionsService
@@ -9,6 +9,6 @@ namespace CoalitionBank.Handlers.Grpc.Commands.TransactionsService
     public class UpdateTransactionCommand : IGrpcCommandMarker
     {
         [ProtoMember(1)]
-        public TransactionDto entity { get; set; }
+        public TransactionDto Entity { get; set; }
     }
 }
