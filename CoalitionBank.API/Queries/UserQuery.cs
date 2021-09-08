@@ -6,21 +6,19 @@ using CoalitionBank.Handlers.Grpc.Commands.UsersService;
 using CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService;
 using GraphQL.Types;
 using Grpc.Net.Client;
+using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.Client;
 
 namespace CoalitionBank.API.Queries
 {
-    public class UserQuery : ObjectGraphType<object>, IGraphQueryMarker, IDisposable
+    public class UserQuery : ObjectGraphType<object>, IGraphQueryMarker
     {
-        private GrpcChannel _channel;
+        private readonly IUsersGrpcService _usersGrpcService;
         
-        private readonly IUsersGrpcService _service;
-        
-        public UserQuery()
+        public UserQuery(IServiceProvider provider)
         {
-            _channel = GrpcChannel.ForAddress("http://users-service");
-            _service = _channel.CreateGrpcService<IUsersGrpcService>();
-
+            _usersGrpcService = provider.GetService<IUsersGrpcService>();
+            
             FieldAsync<UserType>("user",
                 arguments: new SpecificQueryArguments(),
                 resolve: async context =>
@@ -30,7 +28,7 @@ namespace CoalitionBank.API.Queries
                         Id = (string)context.Arguments["id"].Value,
                         PartitionKey = (string)context.Arguments["partitionKey"].Value
                     };
-                    var result = await _service.GetUser(command);
+                    var result = await _usersGrpcService.GetUser(command);
                     return result.User;
                 });
 
@@ -42,14 +40,9 @@ namespace CoalitionBank.API.Queries
                         Page = (int)context.Arguments["page"].Value,
                         PageSize = (int)context.Arguments["pageSize"].Value
                     };
-                    var result = await _service.GetUsers(command);
+                    var result = await _usersGrpcService.GetUsers(command);
                     return result.Users;
                 });
-        }
-
-        public void Dispose()
-        {
-            _channel?.Dispose();
         }
     }
 }

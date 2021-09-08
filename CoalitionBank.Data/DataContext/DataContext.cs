@@ -119,6 +119,21 @@ namespace CoalitionBank.Data.DataContext
             return response.Resource;
         }
 
+        public async Task<IEnumerable<T>> CreateMany<T>(IEnumerable<T> entities) where T : BaseEntity
+        {
+            var container = GetContainerFromEntity<T>();
+            var result = new List<T>();
+            
+            foreach (var entity in entities)
+            {
+                var response = await container.CreateItemAsync(entity, new PartitionKey(entity.PartitionKey));
+                _logger.Information($"[{nameof(Create)}] Charge: {response.RequestCharge}");
+                result.Add(response.Resource);
+            }
+
+            return result;
+        }
+
         public async Task<T> Update<T>(T entity) where T : BaseEntity
         {
             var container = GetContainerFromEntity<T>();

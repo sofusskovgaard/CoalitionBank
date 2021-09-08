@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoalitionBank.API.Types;
+using CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProtoBuf.Grpc.ClientFactory;
 
 namespace CoalitionBank.API
 {
@@ -29,7 +31,12 @@ namespace CoalitionBank.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<GraphSchema>();
-            
+
+            services.AddCodeFirstGrpcClient<IUsersGrpcService>(options =>
+            {
+                options.Address = new Uri(System.Environment.GetEnvironmentVariable("USERS_SERVICE_URI"));
+            });
+
             services.AddGraphQL((options, provider) =>
                 {
                     options.EnableMetrics = Environment.IsDevelopment();
