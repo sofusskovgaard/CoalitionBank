@@ -12,9 +12,9 @@ namespace CoalitionBank.Infrastructure.GrpcServices.TransactionsGrpcService
     {
         private readonly IServiceScope _scope;
 
-        public TransactionsGrpcService(IServiceScope scope)
+        public TransactionsGrpcService(IServiceScopeFactory serviceScopeFactory)
         {
-            _scope = scope;
+            _scope = serviceScopeFactory.CreateScope();
         }
 
         public async Task<GetTransactionCommandResult> GetTransaction(GetTransactionCommand command)

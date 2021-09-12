@@ -29,6 +29,10 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.TransactionsService
         {
             var _senderTransaction = _mapper.Map<TransactionEntity>(command.Entity);
             var _receiverTransaction = _mapper.Map<TransactionEntity>(command.Entity);
+            
+            if (string.IsNullOrEmpty(_senderTransaction.Id))
+                _senderTransaction.Id = UUIDGenerator.Generate();
+
             _senderTransaction.PartitionKey = _senderTransaction.SenderAccount;
             _receiverTransaction.PartitionKey = _senderTransaction.ReceiverAccount;
             _receiverTransaction.Id = UUIDGenerator.Generate();

@@ -8,5 +8,8 @@
     &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.GetUsers&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.DeleteUser&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Users.UpdateUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Accounts.GetAccounts&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Accounts.CreateAccount&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ADE608A1-FCC6-449E-9B21-D695D2CFAA31::net5.0::CoalitionBank.Services.Testing.Services_Accounts.DeleteAccount&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

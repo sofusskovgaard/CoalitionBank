@@ -2,6 +2,7 @@
 using AutoMapper;
 using CoalitionBank.Common.DataTransportObjects.Accounts;
 using CoalitionBank.Common.Entities.Accounts;
+using CoalitionBank.Common.Helpers;
 using CoalitionBank.Data.DataContext;
 using CoalitionBank.Handlers.Grpc.CommandResults.AccountsService;
 using CoalitionBank.Handlers.Grpc.Commands.AccountsService;
@@ -24,6 +25,10 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.AccountsService
         public override async Task<CreateAccountCommandResult> Invoke(CreateAccountCommand command)
         {
             var _entity = _mapper.Map<AccountEntity>(command.Entity);
+            
+            if (string.IsNullOrEmpty(_entity.Id))
+                _entity.Id = UUIDGenerator.Generate();
+
             var entity = await _dataContext.Create(_entity);
             var dto = _mapper.Map<AccountDto>(entity);
             return new CreateAccountCommandResult() { Entity = dto };

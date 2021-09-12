@@ -59,9 +59,9 @@ namespace CoalitionBank.Services.Testing
 
             var entity = new UserDto()
             {
-                Firstname = "Crusty",
-                Lastname = "Jordbærhjelm",
-                Email = "jordbaer@mcnutsacc.com",
+                Firstname = "Sofus",
+                Lastname = "Skovgaard",
+                Email = "sofus.skovgaard@gmail.com",
                 Password = "Test123!"
             };
             

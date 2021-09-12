@@ -7,6 +7,11 @@ namespace CoalitionBank.Common.Entities.Transactions
     [CosmosContainer("Transactions")]
     public class TransactionEntity : BaseEntity, ITransactionEntity
     {
+        public TransactionEntity()
+        {
+            Id = UUIDGenerator.Generate();
+        }
+        
         public TransactionEntity(string RowKey = null, string PartitionKey = null)
         {
             RowKey = !string.IsNullOrEmpty(RowKey) ? RowKey : UUIDGenerator.Generate();

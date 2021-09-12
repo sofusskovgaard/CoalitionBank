@@ -11,9 +11,9 @@ namespace CoalitionBank.Infrastructure.GrpcServices.AccountsGrpcService
     {
         private readonly IServiceScope _scope;
 
-        public AccountsGrpcService(IServiceScope scope)
+        public AccountsGrpcService(IServiceScopeFactory serviceScopeFactory)
         {
-            _scope = scope;
+            _scope = serviceScopeFactory.CreateScope();
         }
 
         public async Task<CreateAccountCommandResult> CreateAccount(CreateAccountCommand command)

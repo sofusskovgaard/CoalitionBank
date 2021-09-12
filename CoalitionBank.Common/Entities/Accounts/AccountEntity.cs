@@ -6,6 +6,11 @@ namespace CoalitionBank.Common.Entities.Accounts
     [CosmosContainer("Accounts")]
     public class AccountEntity : BaseEntity, IAccountEntity
     {
+        public AccountEntity()
+        {
+            Id = UUIDGenerator.Generate();
+        }
+        
         public AccountEntity(string RowKey = null, string PartitionKey = null)
         {
             RowKey = !string.IsNullOrEmpty(RowKey) ? RowKey : UUIDGenerator.Generate();
