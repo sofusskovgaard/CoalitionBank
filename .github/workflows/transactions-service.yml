@@ -7,9 +7,6 @@ on:
 env:
   DOCKERFILE_LOCATION: CoalitionBank.Services.Transactions/Dockerfile
   CONTAINER_NAME: transactions-service
-  CONTAINER_TAG: ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ env.CONTAINER_NAME }}
-  CONTAINER_TAG_SHA: ${{ env.CONTAINER_TAG }}:${{ github.sha }}
-  CONTAINER_TAG_LATEST: ${{ env.CONTAINER_TAG }}:latest
 
 jobs:
   build_and_publish:
@@ -23,6 +20,10 @@ jobs:
         username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
         password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
     - name: Build and Push container to registry
+      env:
+        CONTAINER_TAG: ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ env.CONTAINER_NAME }}
+        CONTAINER_TAG_SHA: ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+        CONTAINER_TAG_LATEST: ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ env.CONTAINER_NAME }}:latest
       run: |
         docker build --file=${{ env.DOCKERFILE_LOCATION }} -t ${{ env.CONTAINER_TAG_SHA }} -t ${{ env.CONTAINER_TAG_LATEST }} .
         docker push ${{ env.CONTAINER_TAG }} --all-tags
