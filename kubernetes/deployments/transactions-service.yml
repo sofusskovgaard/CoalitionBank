@@ -14,12 +14,28 @@ spec:
       containers:
         - image: coalitionbank.azurecr.io/transactions-service:latest
           name: transactions-service
+          env:
+            - name: COSMOS_ENTRYPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: cosmosdb-secret
+                  key: ENTRYPOINT
+            - name: COSMOS_PRIMARYKEY
+              valueFrom:
+                secretKeyRef:
+                  name: cosmosdb-secret
+                  key: PRIMARYKEY
+            - name: COSMOS_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: cosmosdb-secret
+                  key: DATABASE
           resources:
             requests:
-              cpu: 200m
-              memory: 128Mi
+              cpu: 100m
+              memory: 256Mi
             limits:
-              cpu: 500m
+              cpu: 250m
               memory: 512Mi
           ports:
             - containerPort: 80
