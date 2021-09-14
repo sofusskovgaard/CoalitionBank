@@ -28,6 +28,9 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.AccountsService
             
             if (string.IsNullOrEmpty(_entity.Id))
                 _entity.Id = UUIDGenerator.Generate();
+            
+            if (string.IsNullOrEmpty(_entity.PartitionKey))
+                _entity.PartitionKey = _entity.Owner;
 
             var entity = await _dataContext.Create(_entity);
             var dto = _mapper.Map<AccountDto>(entity);
