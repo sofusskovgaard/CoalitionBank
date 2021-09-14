@@ -12,8 +12,7 @@ using CoalitionBank.Handlers.Grpc.Helpers;
 
 namespace CoalitionBank.Handlers.Grpc.CommandHandlers.TransactionsService
 {
-    public class
-        CreateTransactionCommandHandler : GrpcCommandHandler<CreateTransactionCommand, CreateTransactionCommandResult>
+    public class CreateTransactionCommandHandler : GrpcCommandHandler<CreateTransactionCommand, CreateTransactionCommandResult>
     {
         private readonly IDataContext _dataContext;
 

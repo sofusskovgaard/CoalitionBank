@@ -1,5 +1,6 @@
 using System;
 using CoalitionBank.API.Helpers;
+using CoalitionBank.API.Mutations;
 using CoalitionBank.API.Queries;
 using CoalitionBank.Infrastructure.GrpcServices.UsersGrpcService;
 using GraphQL.Types;
@@ -13,6 +14,7 @@ namespace CoalitionBank.API
         public GraphSchema(IServiceProvider provider) : base(provider)
         {
             Query = new RootQuery(this);
+            Mutation = new RootMutation(this);
         }
     }
 }
