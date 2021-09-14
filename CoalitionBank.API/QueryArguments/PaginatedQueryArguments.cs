@@ -6,7 +6,7 @@ namespace CoalitionBank.API.QueryArguments
     {
         public PaginatedQueryArguments()
         {
-            Add(new QueryArgument<IntGraphType>() { Name = "PartitionKey", DefaultValue = null });
+            Add(new QueryArgument<StringGraphType>() { Name = "PartitionKey", DefaultValue = null });
             Add(new QueryArgument<IntGraphType>() { Name = "Page", DefaultValue = 1 });
             Add(new QueryArgument<IntGraphType>() { Name = "PageSize", DefaultValue = 10 });
         }

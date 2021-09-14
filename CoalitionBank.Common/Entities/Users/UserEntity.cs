@@ -1,3 +1,4 @@
+using System;
 using CoalitionBank.Common.Attributes;
 using CoalitionBank.Common.Helpers;
 using Newtonsoft.Json;
@@ -13,12 +14,14 @@ namespace CoalitionBank.Common.Entities.Users
         {
             Id = UUIDGenerator.Generate();
             PartitionKey = "global";
+            CreatedAt = DateTime.Now;
         }
         
         public UserEntity(string RowKey = null)
         {
             RowKey = !string.IsNullOrEmpty(RowKey) ? RowKey : UUIDGenerator.Generate();
             PartitionKey = "global";
+            CreatedAt = DateTime.Now;
         }
 
         public string Firstname { get; set; }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CoalitionBank.Common.DataTransportObjects.Accounts;
@@ -27,8 +29,17 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.AccountsService
         public override async Task<UpdateAccountBalanceCommandResult> Invoke(UpdateAccountBalanceCommand command)
         {
             var account = await _dataContext.Get<AccountEntity>(command.Id, command.PartitionKey);
-            var entities = await _dataContext.GetFrom<TransactionEntity>(account.LastKnownTransaction, account.Id);
-
+            IEnumerable<TransactionEntity> entities;
+            if (string.IsNullOrEmpty(account.LastKnownTransaction))
+            {
+                entities = await _dataContext.Get<TransactionEntity>(account.Id, 1, Int32.MaxValue);
+            }
+            else
+            {
+                var lastKnownTransaction = await _dataContext.Get<TransactionEntity>(account.LastKnownTransaction, account.Id);
+                entities = await _dataContext.GetFrom<TransactionEntity>(lastKnownTransaction.CreatedAt, lastKnownTransaction.PartitionKey);
+            }
+            
             if (entities != null && entities?.Count() > 0)
             {
                 account.Balance += entities.Sum(entity =>

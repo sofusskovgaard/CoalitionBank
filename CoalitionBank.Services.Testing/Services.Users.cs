@@ -15,6 +15,10 @@ namespace CoalitionBank.Services.Testing
 {
     public class Services_Users
     {
+
+        private const string userId = "mmiJU7XDY0mfkUJVebOlRg";
+        private const string userPK = "global";
+        
         private readonly ITestOutputHelper output;
 
         public Services_Users(ITestOutputHelper output)
@@ -29,11 +33,13 @@ namespace CoalitionBank.Services.Testing
             using var channel = GrpcChannel.ForAddress("http://localhost:5001");
             var service = channel.CreateGrpcService<IUsersGrpcService>();
             var sw = new Stopwatch();
+            
             sw.Start();
-            var result = await service.GetUser(new GetUserCommand() { Id = "BIXJdTL3IkO0CGuIhzhyLQ", PartitionKey = "global" });
+            var result = await service.GetUser(new GetUserCommand() { Id = userId, PartitionKey = userPK });
             sw.Stop();
+            
             output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
-            output.WriteLine(JsonConvert.SerializeObject(result.User));
+            output.WriteLine(JsonConvert.SerializeObject(result));
         }
         
         [Fact]
@@ -43,11 +49,13 @@ namespace CoalitionBank.Services.Testing
             using var channel = GrpcChannel.ForAddress("http://localhost:5001");
             var service = channel.CreateGrpcService<IUsersGrpcService>();
             var sw = new Stopwatch();
+            
             sw.Start();
             var result = await service.GetUsers(new GetUsersCommand());
             sw.Stop();
+            
             output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
-            output.WriteLine(JsonConvert.SerializeObject(result.Users));
+            output.WriteLine(JsonConvert.SerializeObject(result));
         }
         
         [Fact]
@@ -59,20 +67,21 @@ namespace CoalitionBank.Services.Testing
 
             var entity = new UserDto()
             {
-                Firstname = "Sofus",
-                Lastname = "Skovgaard",
-                Email = "sofus.skovgaard@gmail.com",
+                Firstname = "Test",
+                Lastname = "McTester",
+                Email = "test.mctester@mail.com",
                 Password = "Test123!"
             };
             
             var sw = new Stopwatch();
+            
             sw.Start();
             var result = await service.CreateUser(new CreateUserCommand() { Entity = entity });
             sw.Stop();
             
             
             output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
-            output.WriteLine(JsonConvert.SerializeObject(result.Entity));
+            output.WriteLine(JsonConvert.SerializeObject(result));
         }
         
         [Fact]
@@ -81,14 +90,14 @@ namespace CoalitionBank.Services.Testing
             GrpcClientFactory.AllowUnencryptedHttp2 = true;
             using var channel = GrpcChannel.ForAddress("http://localhost:5001");
             var service = channel.CreateGrpcService<IUsersGrpcService>();
-
             var sw = new Stopwatch();
+            
             sw.Start();
-            var result = await service.DeleteUser(new DeleteUserCommand() { Id = "IdUoyRXBUShrzctZu0BA", PartitionKey = "global" });
+            var result = await service.DeleteUser(new DeleteUserCommand() { Id = userId, PartitionKey = userPK });
             sw.Stop();
 
             output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
-            output.WriteLine(JsonConvert.SerializeObject(result.Success));
+            output.WriteLine(JsonConvert.SerializeObject(result));
         }
         
         [Fact]
@@ -102,15 +111,16 @@ namespace CoalitionBank.Services.Testing
 
             var user = userResult.Users.First();
 
-            user.Firstname = "Cunt shit fuck";
+            user.Firstname = "Tester";
             
             var sw = new Stopwatch();
+            
             sw.Start();
             var result = await service.UpdateUser(new UpdateUserCommand() { Entity = user });
             sw.Stop();
 
             output.WriteLine($"Stopwatch: {sw.Elapsed.TotalMilliseconds}\n");
-            output.WriteLine(JsonConvert.SerializeObject(result.Entity));
+            output.WriteLine(JsonConvert.SerializeObject(result));
         }
     }
 }

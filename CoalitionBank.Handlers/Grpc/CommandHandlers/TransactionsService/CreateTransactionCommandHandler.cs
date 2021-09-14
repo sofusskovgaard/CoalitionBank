@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,13 +29,16 @@ namespace CoalitionBank.Handlers.Grpc.CommandHandlers.TransactionsService
         {
             var _senderTransaction = _mapper.Map<TransactionEntity>(command.Entity);
             var _receiverTransaction = _mapper.Map<TransactionEntity>(command.Entity);
-            
-            if (string.IsNullOrEmpty(_senderTransaction.Id))
-                _senderTransaction.Id = UUIDGenerator.Generate();
 
+            var date = DateTime.Now;
+            
+            _senderTransaction.Id = UUIDGenerator.Generate();
             _senderTransaction.PartitionKey = _senderTransaction.SenderAccount;
-            _receiverTransaction.PartitionKey = _senderTransaction.ReceiverAccount;
+            _senderTransaction.CreatedAt = date;
+            
             _receiverTransaction.Id = UUIDGenerator.Generate();
+            _receiverTransaction.PartitionKey = _senderTransaction.ReceiverAccount;
+            _receiverTransaction.CreatedAt = date;
 
             var result = await _dataContext.CreateMany(new[] { _senderTransaction, _receiverTransaction });
             

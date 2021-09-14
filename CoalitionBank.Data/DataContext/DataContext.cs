@@ -12,6 +12,7 @@ using CoalitionBank.Common.Entities;
 using CoalitionBank.Data.Helpers;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace CoalitionBank.Data.DataContext
@@ -32,13 +33,16 @@ namespace CoalitionBank.Data.DataContext
                 }),
             HttpClientFactory = () =>
             {
-                HttpMessageHandler httpMessageHandler = new HttpClientHandler
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
                 {
-                    ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
-                };
-                return new HttpClient(httpMessageHandler);
+                    return new HttpClient(new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
+                    }); 
+                }
+                return new HttpClient();
             },
-            ConnectionMode = ConnectionMode.Gateway
+            ConnectionMode = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development ? ConnectionMode.Gateway : ConnectionMode.Direct
         };
 
         private readonly CosmosClient _client;
@@ -131,14 +135,13 @@ namespace CoalitionBank.Data.DataContext
             return result;
         }
 
-        public async Task<IEnumerable<T>> GetFrom<T>(string Id, string PartitionKey) where T : BaseEntity
+        public async Task<IEnumerable<T>> GetFrom<T>(DateTime from, string PartitionKey = null) where T : BaseEntity
         {
             var result = new List<T>();
             var container = GetContainerFromEntity<T>();
 
             var query = container.GetItemLinqQueryable<T>(linqSerializerOptions: _serializerOptions)
-                .OrderByDescending(entity => entity.CreatedAt).Where(entity => entity.PartitionKey == PartitionKey)
-                .SkipWhile(entity => entity.Id != Id);
+                .OrderBy(entity => entity.CreatedAt).Where(entity => entity.PartitionKey == PartitionKey && DateTime.Compare(from, entity.CreatedAt) < 0);
 
             using var feed = query.ToFeedIterator();
 
@@ -148,7 +151,6 @@ namespace CoalitionBank.Data.DataContext
                 _logger.Information($"[{nameof(Get)}] Charge: {response.RequestCharge}");
                 foreach (var item in response)
                 {
-                    if (item.Id == Id) continue;
                     result.Add(item);   
                 }
             }

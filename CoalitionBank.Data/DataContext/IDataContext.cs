@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoalitionBank.Common.Entities;
@@ -12,7 +13,7 @@ namespace CoalitionBank.Data.DataContext
         
         Task<IEnumerable<T>> Get<T>(string PartitionKey = null, int page = 1, int pageSize = 10) where T : BaseEntity;
         
-        Task<IEnumerable<T>> GetFrom<T>(string Id, string PartitionKey) where T : BaseEntity;
+        Task<IEnumerable<T>> GetFrom<T>(DateTime from, string PartitionKey = null) where T : BaseEntity;
 
         Task<bool> Delete<T>(string Id, string PartitionKey) where T : BaseEntity;
 
