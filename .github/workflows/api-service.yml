@@ -27,3 +27,26 @@ jobs:
       run: |
         docker build --file=${{ env.DOCKERFILE_LOCATION }} -t ${{ env.CONTAINER_TAG_SHA }} -t ${{ env.CONTAINER_TAG_LATEST }} .
         docker push ${{ env.CONTAINER_TAG }} --all-tags
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: production
+        resource-group: CoalitionBank
+    - uses: azure/k8s-create-secret@v1
+      with:
+        container-registry-url: ${{ secrets.CONTAINER_REGISTRY_NAME }}
+        container-registry-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+        secret-name: acr-secret
+        namespace: default
+        force: true
+    - uses: azure/k8s-deploy@v1
+      with:
+        manifests: |
+          kubernetes/deployments/${{ env.CONTAINER_NAME }}.yml
+          kubernetes/services/${{ env.CONTAINER_NAME }}.yml
+        images: |
+          ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+        imagepullsecrets: |
+          acr-secret
+        namespace: default
