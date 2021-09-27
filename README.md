@@ -25,5 +25,5 @@ This project also utilizes Github actions to build and publish the different ser
 1. Download and install [Docker](https://www.docker.com/get-started).
 2. run `docker compose build` and wait for the build to complete.
 3. run `docker compose up -d`.
-   - You might experience some funniness when starting up the containers. If the services shutdown when started it's because the CosmosDB emulator hasn't completed it's initialization process. This is because the emulator image was created in such a way where it tells docker it's ready before it's actually ready. To remedy this, check the logs of the emulator and restart the other services using `docker compose restart` when it's ready.
+   - You might experience some funniness when starting up the containers. If the services shutdown when started it's because the CosmosDB emulator hasn't completed it's initialization process. This is because the emulator image was created in such a way where it tells docker it's ready before it's actually ready. To remedy this, check the logs of the emulator and restart the other services when it's ready.
 4. now go to [localhost:5000/ui/playground](http://localhost:5000/ui/playground).
