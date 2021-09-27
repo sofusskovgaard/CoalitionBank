@@ -19,3 +19,11 @@ It's a simple application consisting of 4 services.
 The services, except the api, utilize an Azure CosmosDB database for the purpose of storing data.
 
 This project also utilizes Github actions to build and publish the different services as docker images to a private Azure Container Registry. In the same actions the various service deployments in the Kubernetes Cluster on Azure get incremented to the newest version. The actions get triggered when a new release is made of this repository.
+
+## Running the project
+
+1. Download and install [Docker](https://www.docker.com/get-started).
+2. run `docker compose build` and wait for the build to complete.
+3. run `docker compose up -d`.
+   - You might experience some funniness when starting up the containers. If the services shutdown when started it's because the CosmosDB emulator hasn't completed it's initialization process. This is because the emulator image was created in such a way where it tells docker it's ready before it's actually ready. To remedy this, check the logs of the emulator and restart the other services using `docker compose restart` when it's ready.
+4. now go to [localhost:5000/ui/playground](http://localhost:5000/ui/playground).
