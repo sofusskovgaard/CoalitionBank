@@ -13,7 +13,8 @@ It's a simple application consisting of 4 services.
 - **Accounts service**
   - This is a gRPC service that serves remote procedure calls regarding accounts.
 
->![theoreical](docs/theoretical.jpg)
+![theoreical](docs/theoretical.jpg)
+
 This is what the interaction between the services look like.
 
 The services, except the api, utilize an Azure CosmosDB database for the purpose of storing data.
